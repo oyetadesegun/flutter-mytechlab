@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "545097700598",
+    "project_id": "mytechlab-1c57d",
+    "storage_bucket": "mytechlab-1c57d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:545097700598:android:e4898aa40f68d1bd8c48d7",
+        "android_client_info": {
+          "package_name": "com.johnwell.mytechlab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "545097700598-rupd6cj3g4dkcdho0nsduj1rmib28125.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.johnwell.mytechlab",
+            "certificate_hash": "ab8fca6472d9ae5467dac8fc8477917115d336d4"
+          }
+        },
+        {
+          "client_id": "545097700598-amc787ne9kpk2cor283mlbhequkkj9fu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_8G8RNC5O-07T1ECToHbKlz_OqZexyBU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "545097700598-amc787ne9kpk2cor283mlbhequkkj9fu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
