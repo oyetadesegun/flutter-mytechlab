@@ -1,29 +1,24 @@
-import 'package:email_validator/email_validator.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable, avoid_unnecessary_containers, prefer_const_constructors_in_immutables
 import 'package:flutter/material.dart';
+
 import 'package:mytechlab/components/constants/colors.dart';
-import '../screens.dart/signup&login_screen/signup_screen.dart';
+import 'package:mytechlab/screens.dart/drawer/Main_drawer_page.dart';
 
-import '../my_home_page/my_home_page.dart';
-import '../screens.dart/signup&login_screen/login_screen.dart';
-
-class form extends StatelessWidget {
+class Forms extends StatelessWidget {
   IconData icon;
 
   String hint;
-  form(
-    this.icon,
-    this.hint,
-  );
+  Forms(this.icon, this.hint, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-      padding: EdgeInsets.only(left: 20, right: 20),
+      margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+      padding: const EdgeInsets.only(left: 20, right: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         color: Colors.grey[200],
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
               offset: Offset(0, 10), blurRadius: 50, color: Color(0xffeeeeee)),
         ],
@@ -47,11 +42,9 @@ class form extends StatelessWidget {
   }
 }
 
-class headerSection extends StatelessWidget {
+class HeaderSection extends StatelessWidget {
   String text;
-  headerSection(
-    this.text,
-  );
+  HeaderSection(this.text, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +52,7 @@ class headerSection extends StatelessWidget {
       height: 300,
       decoration: BoxDecoration(
         color: kAccent,
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(90),
         ),
       ),
@@ -69,17 +62,17 @@ class headerSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              margin: EdgeInsets.only(top: 50),
-              child: Image.asset('images/logoWhite.png'),
+              margin: const EdgeInsets.only(top: 50),
               height: 180,
               width: 180,
+              child: Image.asset('images/logoWhite.png'),
             ),
             Container(
-              margin: EdgeInsets.only(right: 20, top: 20),
+              margin: const EdgeInsets.only(right: 20, top: 20),
               alignment: Alignment.bottomRight,
               child: Text(
                 text,
-                style: TextStyle(fontSize: 20, color: Colors.white),
+                style: const TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
           ],
@@ -89,20 +82,23 @@ class headerSection extends StatelessWidget {
   }
 }
 
-class bttn extends StatelessWidget {
+class Bttn extends StatelessWidget {
   final String text;
 
-  bttn(this.context, this.text);
+  const Bttn(this.context, this.text, {super.key});
 
   final BuildContext context;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => {Navigator.pushReplacementNamed(context, MyHomePage.id)},
+      onTap: () => {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => MainDrawerPage()))
+      },
       child: Container(
-          margin: EdgeInsets.only(left: 20, right: 20, top: 50),
-          padding: EdgeInsets.only(left: 20, right: 20),
+          margin: const EdgeInsets.only(left: 20, right: 20, top: 50),
+          padding: const EdgeInsets.only(left: 20, right: 20),
           height: 54,
           alignment: Alignment.center,
           decoration: BoxDecoration(
@@ -115,7 +111,7 @@ class bttn extends StatelessWidget {
                     color: Color(0xffeeeeee))
               ]),
           child: Text(text,
-              style: TextStyle(
+              style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                   color: Colors.white))),
@@ -123,6 +119,7 @@ class bttn extends StatelessWidget {
   }
 }
 
+// ignore: camel_case_types
 class isMember extends StatelessWidget {
   const isMember({
     Key? key,
@@ -134,43 +131,37 @@ class isMember extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        //margin: EdgeInsets.only(top: 10),
         child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Already a Member ? '),
+        const Text('Already a Member ? '),
         GestureDetector(
-            // onTap: () => {Navigator.pushNamed(context, LoginScreen())},
             child: Text('Login Now', style: TextStyle(color: kAccent)))
       ],
     ));
   }
 }
 
-class phoneNumber extends StatelessWidget {
-  const phoneNumber({
+class PhoneNumber extends StatelessWidget {
+  const PhoneNumber({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-      padding: EdgeInsets.only(left: 20, right: 20),
+      margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+      padding: const EdgeInsets.only(left: 20, right: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         color: Colors.grey[200],
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
               offset: Offset(0, 10), blurRadius: 50, color: Color(0xffeeeeee)),
         ],
       ),
       alignment: Alignment.center,
       child: TextField(
-        // autovalidateMode: AutovalidateMode.onUserInteraction,
-        // validator: (value) => value != null && value.length >= 10
-        //     ? 'Enter a validate phone number'
-        //     : null,
         textInputAction: TextInputAction.next,
         onChanged: (value) {},
         keyboardType: TextInputType.phone,
@@ -220,14 +211,11 @@ class Email extends StatelessWidget {
               ? null
               : 'Please provide a valid Email address';
         },
-        //  email != null && !EmailValidator.validate(email)
-        //     ? 'Enter a valid email'
-        //     : null,
         textInputAction: TextInputAction.next,
         keyboardType: TextInputType.emailAddress,
         controller: emailController,
         cursorColor: kAccent,
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           icon: Icon(
             Icons.mail,
             color: kAccent,
@@ -241,8 +229,8 @@ class Email extends StatelessWidget {
   }
 }
 
-class Password extends StatelessWidget {
-  const Password({
+class Password extends StatefulWidget {
+  Password({
     Key? key,
     required this.passwordController,
   }) : super(key: key);
@@ -250,7 +238,13 @@ class Password extends StatelessWidget {
   final TextEditingController passwordController;
 
   @override
+  State<Password> createState() => _PasswordState();
+}
+
+class _PasswordState extends State<Password> {
+  @override
   Widget build(BuildContext context) {
+    bool showPassword = true;
     return Container(
       margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
       padding: const EdgeInsets.only(left: 20, right: 20),
@@ -264,17 +258,25 @@ class Password extends StatelessWidget {
       ),
       alignment: Alignment.center,
       child: TextFormField(
-        controller: passwordController,
-        textInputAction: TextInputAction.done,
-        obscureText: true,
+        keyboardType: TextInputType.visiblePassword,
+        controller: widget.passwordController,
+        textInputAction: TextInputAction.next,
+        obscureText: !showPassword,
         cursorColor: kAccent,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: (value) => value != null && value.length < 6
             ? 'Enter min. 6 characters'
             : null,
-        decoration: const InputDecoration(
-          // ignore: unnecessary_const
-          icon: const Icon(
+        decoration: InputDecoration(
+          suffixIcon: GestureDetector(
+            onTap: (() {
+              setState(() {
+                showPassword = !showPassword;
+              });
+            }),
+            child: Icon(showPassword ? Icons.visibility : Icons.visibility_off),
+          ),
+          icon: Icon(
             Icons.vpn_key,
             color: kAccent,
           ),
@@ -325,9 +327,8 @@ class RePassword extends StatelessWidget {
 
           return null;
         },
-        decoration: const InputDecoration(
-          // ignore: unnecessary_const
-          icon: const Icon(
+        decoration: InputDecoration(
+          icon: Icon(
             Icons.vpn_key,
             color: kAccent,
           ),

@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import 'package:mytechlab/components/constants/constant.dart';
@@ -10,27 +9,23 @@ import '../screens.dart/explore_screen/job_info_bottom_tile.dart';
 
 class JobTile extends StatelessWidget {
   final Jobs job;
-  JobTile(
-    this.job,
-  );
+  const JobTile(this.job, {super.key});
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
-            //  isScrollControlled: true,
-            context: context,
-            builder: (context) => AddJobBottomTile(job));
+            context: context, builder: (context) => AddJobBottomTile(job));
       },
       child: Expanded(
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
                 color: isWhite ? Colors.grey[100] : Colors.grey[400],
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.grey,
                     blurRadius: 4,
@@ -39,14 +34,14 @@ class JobTile extends StatelessWidget {
                 ],
               ),
               height: 120,
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
                       child: Image.asset(job.kImage)),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -57,7 +52,7 @@ class JobTile extends StatelessWidget {
                         softWrap: false,
                         style: kJobTitleStyle,
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Row(
                         children: [
                           Icon(
@@ -73,9 +68,9 @@ class JobTile extends StatelessWidget {
                       Star(job)
                     ],
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Container(
-                    padding: EdgeInsets.only(bottom: 10),
+                    padding: const EdgeInsets.only(bottom: 10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -86,7 +81,7 @@ class JobTile extends StatelessWidget {
                         ),
                         Text(
                           job.kPrices,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: Colors.red,
                               fontSize: 25,
                               fontWeight: FontWeight.bold),
@@ -97,7 +92,7 @@ class JobTile extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),

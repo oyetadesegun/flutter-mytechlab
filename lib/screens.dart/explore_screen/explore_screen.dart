@@ -1,15 +1,18 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:mytechlab/main.dart';
-import 'package:mytechlab/screens.dart/explore_screen/explore_joblist.dart';
 
 import '../../components/job_tile.dart';
 import '../../data/job_data.dart';
+import '../drawer/drawer_menu_widget.dart';
 import 'explore_components.dart';
 
 class ExploreScreen extends StatelessWidget {
-  final moduleList = Jobs.generateJobs();
   static const String id = 'ExploreScreen';
+  final VoidCallback openDrawer;
+  final moduleList = Jobs.generateJobs();
+
+  ExploreScreen({super.key, required this.openDrawer});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +22,9 @@ class ExploreScreen extends StatelessWidget {
         slivers: <Widget>[
           SliverAppBar(
               backgroundColor: Colors.green,
-              title: TitleSection(),
+              title: TitleSection(
+                openDrawer: openDrawer,
+              ),
               pinned: true,
               expandedHeight: 240,
               flexibleSpace: FlexibleSpaceBar(

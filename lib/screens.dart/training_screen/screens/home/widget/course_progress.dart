@@ -5,21 +5,23 @@ import '../../../models/module.dart';
 
 class CourseProgress extends StatelessWidget {
   final moduleList = Module.generateModules();
+
+  CourseProgress({super.key});
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(25),
+      padding: const EdgeInsets.all(25),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 'The Progress',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
               Row(
-                children: [
+                children: const [
                   Icon(
                     Icons.grid_view,
                     size: 25,
@@ -30,7 +32,7 @@ class CourseProgress extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ...moduleList.map((e) => CourseModule(e))
         ],
       ),

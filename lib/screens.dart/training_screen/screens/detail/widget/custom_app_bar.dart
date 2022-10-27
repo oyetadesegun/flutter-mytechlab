@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:mytechlab/components/constants/colors.dart';
 import 'package:mytechlab/main.dart';
@@ -7,7 +6,7 @@ import '../../../models/course.dart';
 
 class CustomAppBar extends StatelessWidget {
   final Course course;
-  const CustomAppBar(this.course);
+  const CustomAppBar(this.course, {super.key});
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -43,7 +42,7 @@ class CustomAppBar extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15))),
                   onPressed: () {},
-                  child: Text('Start Class'),
+                  child: const Text('Start Class'),
                 ),
               ),
             ),
@@ -53,15 +52,14 @@ class CustomAppBar extends StatelessWidget {
                 child: Container(
                   height: 50,
                   width: 50,
-                  padding: EdgeInsets.only(left: 5),
+                  padding: const EdgeInsets.only(left: 5),
                   decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(15)),
                   child: IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.arrow_back_ios,
                         color: Colors.white,
-                        // size: 20,
                       ),
                       iconSize: 20,
                       onPressed: () => Navigator.pop(context)),
@@ -72,15 +70,14 @@ class CustomAppBar extends StatelessWidget {
                 child: Container(
                     height: 50,
                     width: 50,
-                    padding: EdgeInsets.only(left: 5),
+                    padding: const EdgeInsets.only(left: 5),
                     decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(15)),
                     child: IconButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.bookmark,
                         color: Colors.white,
-                        // size: 20,
                       ),
                       iconSize: 20,
                       onPressed: () {},

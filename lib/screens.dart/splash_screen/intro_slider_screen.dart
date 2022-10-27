@@ -1,15 +1,13 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:mytechlab/screens.dart/signup&login_screen/auth_page.dart';
-import 'package:mytechlab/screens.dart/splash_screen/splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../components/constants/colors.dart';
-import '../../main.dart';
-import '../signup&login_screen/login_screen.dart';
 
 class IntroSliderScreen extends StatefulWidget {
   static const String id = 'IntroSliderScreen';
+
+  const IntroSliderScreen({super.key});
 
   @override
   State<IntroSliderScreen> createState() => _IntroSliderScreenState();
@@ -19,7 +17,6 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
   final controller = PageController();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -70,13 +67,14 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  primary: Colors.white,
+                  foregroundColor: Colors.white,
                   backgroundColor: kAccent,
-                  minimumSize: Size.fromHeight(80)),
+                  minimumSize: const Size.fromHeight(80)),
               onPressed: () async {
                 final prefs = await SharedPreferences.getInstance();
                 prefs.setBool('showHome', true);
-                Navigator.pushReplacementNamed(context, AuthPage.id);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AuthPage()));
               },
               child: const Text('Get Started', style: TextStyle(fontSize: 24)))
           : Container(
@@ -87,20 +85,20 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                   children: [
                     TextButton(
                         onPressed: () => controller.jumpToPage(4),
-                        child: Text(
+                        child: const Text(
                           'SKIP',
                         )),
                     Center(
                       child: SmoothPageIndicator(
                         controller: controller,
                         count: 5,
-                        effect: const WormEffect(
+                        effect: WormEffect(
                             spacing: 16,
                             dotColor: kFont,
                             activeDotColor: kAccent),
                         onDotClicked: (index) => controller.animateToPage(
                           index,
-                          duration: const Duration(milliseconds: 500),
+                          duration: const Duration(milliseconds: 300),
                           curve: Curves.easeIn,
                         ),
                       ),
@@ -109,7 +107,7 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                         onPressed: () => controller.nextPage(
                             duration: const Duration(milliseconds: 500),
                             curve: Curves.easeInOut),
-                        child: Text(
+                        child: const Text(
                           'NEXT',
                         ))
                   ]),
@@ -120,7 +118,7 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
 
 class Page extends StatelessWidget {
   String image, text, desc;
-  Page(this.text, this.desc, this.image);
+  Page(this.text, this.desc, this.image, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -133,13 +131,13 @@ class Page extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 25, color: kAccent, fontWeight: FontWeight.bold)),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
-                padding: EdgeInsets.symmetric(horizontal: 40),
+                padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: Text(
-                  desc, textAlign: TextAlign.center,
-                  // ,
-                  style: TextStyle(fontSize: 18),
+                  desc,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 18),
                 ))
           ],
         ),

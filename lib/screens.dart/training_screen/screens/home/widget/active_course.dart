@@ -9,15 +9,17 @@ import '../../../../../main.dart';
 class ActiveCourse extends StatelessWidget {
   int value = 61;
 
+  ActiveCourse({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
         child: Column(
       children: [
-        CategoryTitle('Currently active', 'view all'),
+        const CategoryTitle('Currently active', 'view all'),
         Container(
-          margin: EdgeInsets.all(25),
-          padding: EdgeInsets.all(10),
+          margin: const EdgeInsets.all(25),
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
               color: kFontLight.withOpacity(0.1),
               border: Border.all(
@@ -33,7 +35,7 @@ class ActiveCourse extends StatelessWidget {
                   ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.asset('images/nicole-2.jpg', width: 60)),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -42,7 +44,7 @@ class ActiveCourse extends StatelessWidget {
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: isWhite ? kFont : Colors.white)),
-                      Text(
+                      const Text(
                         '2 lessons left',
                         style: TextStyle(
                             fontSize: 16,

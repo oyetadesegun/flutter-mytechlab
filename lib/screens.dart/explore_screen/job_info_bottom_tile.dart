@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import 'package:mytechlab/components/constants/constant.dart';
@@ -10,16 +9,13 @@ import 'explore_components.dart';
 
 class AddJobBottomTile extends StatelessWidget {
   Jobs job;
-  AddJobBottomTile(this.job);
+  AddJobBottomTile(this.job, {super.key});
   @override
   Widget build(BuildContext context) {
     return Container(
-        // height: 400,
-
         color: Colors.blueGrey,
         child: Container(
             padding: EdgeInsets.all(20),
-            //  height: 900,
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -99,7 +95,6 @@ class AddJobBottomTile extends StatelessWidget {
                             'Lagos',
                             style: TextStyle(fontSize: 20),
                             softWrap: true,
-                            // maxLines: 10,
                           ),
                         ),
                       ],

@@ -1,24 +1,23 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:mytechlab/my_home_page/my_home_page.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mytechlab/screens.dart/signup&login_screen/services/global_methods.dart';
 import 'package:mytechlab/services/auth.dart';
 import 'package:path/path.dart' as path;
 import 'package:mytechlab/components/constants/colors.dart';
-import 'package:mytechlab/main.dart';
-import 'package:mytechlab/screens.dart/signup&login_screen/utils.dart';
 
 import '../../components/register_form.dart';
+
 import '../../services/database.dart';
-import 'firebase_api.dart';
+import '../../services/helper_functions.dart';
 
 class SignUpScreen extends StatefulWidget {
-  static const String id = 'SignUpScreen';
   final Function() onClickedSignIn;
   const SignUpScreen({
     Key? key,
@@ -29,18 +28,40 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class SignUpState extends State<SignUpScreen> {
+  @override
+  void initState() {
+    node.addListener(() {
+      if (!node.hasFocus) {
+        formatNickname();
+      }
+    });
+    super.initState();
+  }
+
+  void formatNickname() {
+    usernameController.text = usernameController.text.replaceAll(" ", "");
+  }
+
+  bool loading = false;
+  bool isLoading = false;
   AuthMethod authMethod = AuthMethod();
   DatabaseMethods databaseMethods = DatabaseMethods();
+  String? profilePic;
+
   UploadTask? task;
-  File? file;
+  File? imageFile;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final formKey = GlobalKey<FormState>();
-  final usernameController = TextEditingController();
+
+  FocusNode node = FocusNode();
+
   final fullNameController = TextEditingController();
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPassword = TextEditingController();
-
+  final addressController = TextEditingController();
+  final usernameController = TextEditingController();
   @override
   void dispose() {
     usernameController.dispose();
@@ -48,50 +69,179 @@ class SignUpState extends State<SignUpScreen> {
     phoneController.dispose();
     emailController.dispose();
     passwordController.dispose();
-
+    addressController.dispose();
+    confirmPassword.dispose();
     super.dispose();
+  }
+
+  void signUp() async {
+    final isValid = formKey.currentState!.validate();
+    if (isValid) {
+      if (imageFile == null) {
+        GlobalMethod.showErrorDialog(
+            error: 'Please pick an Image', ctx: context);
+        return;
+      }
+      setState(() {
+        isLoading = true;
+      });
+      try {
+        await _auth.createUserWithEmailAndPassword(
+          email: emailController.text.trim().toLowerCase(),
+          password: passwordController.text.trim(),
+        );
+        final User? user = _auth.currentUser;
+        final uid = user!.uid;
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('profilePic')
+            .child('$uid.jpg');
+        await ref.putFile(imageFile!);
+        profilePic = await ref.getDownloadURL();
+        FirebaseFirestore.instance.collection('users').doc(uid).set({
+          'docId': uid,
+          'profilePic': profilePic!,
+          'email': emailController.text.trim().toLowerCase(),
+          'fullName': fullNameController.text.trim(),
+          'phone': phoneController.text.trim(),
+          'username': usernameController.text.toLowerCase().trim(),
+          'address': addressController.text.trim(),
+          'createdAt': Timestamp.now(),
+        });
+        HelperFunctions.saveUserEmailSharedPreference(
+            emailController.text.trim().toLowerCase());
+        HelperFunctions.saveUserFullNameSharedPreference(
+            fullNameController.text.trim());
+        HelperFunctions.saveUserPhoneSharedPreference(
+            phoneController.text.trim());
+        HelperFunctions.saveUserNameSharedPreference(
+            usernameController.text.trim().toLowerCase());
+        HelperFunctions.saveUserAddressSharedPreference(
+            addressController.text.trim());
+        HelperFunctions.saveUserProfilePicSharedPreference(profilePic!);
+        setState(() {
+          isLoading = true;
+        });
+        Navigator.canPop(context) ? Navigator.of(context) : null;
+      } catch (error) {
+        setState(() {
+          isLoading = false;
+        });
+        GlobalMethod.showErrorDialog(error: error.toString(), ctx: context);
+      }
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  void showImageDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Please choose an option'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InkWell(
+                  onTap: () {
+                    getFromCamera();
+                  },
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(4),
+                        child: Icon(
+                          Icons.camera,
+                          color: kAccent,
+                        ),
+                      ),
+                      Text(
+                        'Camera',
+                        style: TextStyle(color: kAccent),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(height: 15),
+                InkWell(
+                  onTap: () {
+                    getFromGallery();
+                  },
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(4),
+                        child: Icon(
+                          Icons.photo,
+                          color: kAccent,
+                        ),
+                      ),
+                      Text(
+                        'Gallery',
+                        style: TextStyle(color: kAccent),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
-    final fileName =
-        file != null ? path.basename(file!.path) : 'No profile uploaded yet...';
     return Scaffold(
       body: SingleChildScrollView(
         child: Form(
           key: formKey,
           child: Column(children: [
-            headerSection('Register'),
+            HeaderSection('Register'),
             const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Stack(
               children: [
-                ElevatedButton.icon(
-                    onPressed: selectFile,
-                    label: const Text('Upload Profile Picture'),
-                    icon: const Icon(Icons.camera_enhance_rounded)),
-                const SizedBox(width: 5),
-                ElevatedButton(
-                    onPressed: uploadFile,
-                    child: const Icon(
-                      Icons.download_done_rounded,
-                      size: 35,
-                    ))
+                CircleAvatar(
+                  radius: 70,
+                  child: ClipOval(
+                    child: SizedBox(
+                      width: 180,
+                      height: 180,
+                      child: (imageFile != null
+                          ? Image.file(
+                              imageFile!,
+                              fit: BoxFit.fill,
+                            )
+                          : Image.network(
+                              'https://img.icons8.com/officel/452/circled-user-male-skin-type-6.png',
+                              fit: BoxFit.fill,
+                            )),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: 4,
+                  child: GestureDetector(
+                      onTap: showImageDialog,
+                      child: ClipOval(
+                        child: Container(
+                          child: Icon(Icons.add_a_photo, color: Colors.white),
+                          padding: EdgeInsets.all(8),
+                          color: Colors.green,
+                        ),
+                      )),
+                ),
               ],
             ),
-            const SizedBox(height: 8),
-            Text(fileName,
-                style:
-                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 2),
-            task != null ? buildUploadStatus(task!) : Container(),
             Container(
-              margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-              padding: EdgeInsets.only(left: 20, right: 20),
+              margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
                 color: Colors.grey[200],
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                       offset: Offset(0, 10),
                       blurRadius: 50,
@@ -100,11 +250,13 @@ class SignUpState extends State<SignUpScreen> {
               ),
               alignment: Alignment.center,
               child: TextFormField(
+                focusNode: node,
                 controller: usernameController,
                 validator: (value) {
                   if (value!.isEmpty) return 'Username can not be Empty';
-                  if (value.length < 4)
+                  if (value.length < 4) {
                     return 'Username can not be less than 4';
+                  }
                   return null;
                 },
                 textInputAction: TextInputAction.next,
@@ -122,12 +274,12 @@ class SignUpState extends State<SignUpScreen> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-              padding: EdgeInsets.only(left: 20, right: 20),
+              margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
                 color: Colors.grey[200],
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                       offset: Offset(0, 10),
                       blurRadius: 50,
@@ -141,10 +293,6 @@ class SignUpState extends State<SignUpScreen> {
                 onChanged: (value) {},
                 validator: (value) =>
                     value!.isEmpty ? "Name can not be empty" : null,
-                // validator: (value) {
-                //   if (value!.isEmpty) return 'Name can not be empty';
-                //   return null;
-                // },
                 cursorColor: kAccent,
                 decoration: InputDecoration(
                   icon: Icon(
@@ -158,12 +306,12 @@ class SignUpState extends State<SignUpScreen> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-              padding: EdgeInsets.only(left: 20, right: 20),
+              margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
                 color: Colors.grey[200],
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                       offset: Offset(0, 10),
                       blurRadius: 50,
@@ -174,8 +322,12 @@ class SignUpState extends State<SignUpScreen> {
               child: TextFormField(
                 controller: phoneController,
                 validator: (value) {
-                  if (value!.isEmpty) return 'phone number can not be empty';
-                  if (value.length < 11) return 'enter a correct phone number';
+                  if (value!.isEmpty) {
+                    return 'phone number can not be empty';
+                  }
+                  if (value.length < 11) {
+                    return 'enter a correct phone number';
+                  }
                   return null;
                 },
                 textInputAction: TextInputAction.next,
@@ -199,21 +351,67 @@ class SignUpState extends State<SignUpScreen> {
                 confirmPassword: confirmPassword,
                 passwordController: passwordController),
             Container(
+              margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                color: Colors.grey[200],
+                boxShadow: const [
+                  BoxShadow(
+                      offset: Offset(0, 10),
+                      blurRadius: 50,
+                      color: Color(0xffeeeeee)),
+                ],
+              ),
+              alignment: Alignment.center,
+              child: TextFormField(
+                //focusNode: node,
+                controller: addressController,
+                validator: (value) {
+                  if (value!.isEmpty) return 'Address can not be Empty';
+                  if (value.length < 4) {
+                    return 'Address can not be less than 4';
+                  }
+                  return null;
+                },
+                //  textInputAction: TextInputAction.next,
+                onChanged: (value) {},
+                cursorColor: kAccent,
+                decoration: InputDecoration(
+                  icon: Icon(
+                    Icons.pin_drop,
+                    color: kAccent,
+                  ),
+                  hintText: 'Address',
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                ),
+              ),
+            ),
+            Container(
                 margin: const EdgeInsets.only(left: 20, right: 20, top: 50),
                 padding: const EdgeInsets.only(left: 20, right: 20),
                 height: 54,
                 alignment: Alignment.center,
-                child: ElevatedButton.icon(
-                  onPressed: signUp,
-                  icon: const Icon(Icons.lock_open),
-                  label: const Text(
-                    'REGISTER',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(50),
-                      backgroundColor: kAccent),
-                )),
+                child: isLoading
+                    ? Container(
+                        child: Center(
+                        child: CircularProgressIndicator(color: kAccent),
+                      ))
+                    : ElevatedButton.icon(
+                        onPressed: () {
+                          signUp();
+                        },
+                        icon: const Icon(Icons.lock_open),
+                        label: const Text(
+                          'REGISTER',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            minimumSize: const Size.fromHeight(50),
+                            backgroundColor: kAccent),
+                      )),
             const SizedBox(height: 10),
             Container(
               margin: const EdgeInsets.only(top: 10),
@@ -226,140 +424,42 @@ class SignUpState extends State<SignUpScreen> {
                         recognizer: TapGestureRecognizer()
                           ..onTap = widget.onClickedSignIn,
                         text: 'Log In',
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 18,
                             color: kAccent,
                             fontWeight: FontWeight.bold))
                   ])),
             ),
-            SizedBox(height: 60)
+            const SizedBox(height: 60)
           ]),
         ),
       ),
     );
   }
 
-  Future selectFile() async {
-    final result = await FilePicker.platform.pickFiles(
-      //type: FileType.image,
-      allowMultiple: false,
-    );
-    if (result == null) return;
-    final path = result.files.single.path!;
-    setState(() => file = File(path));
+  void getFromCamera() async {
+    XFile? pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    cropImage(pickedFile!.path);
+
+    Navigator.pop(context);
   }
 
-  Future uploadFile() async {
-    if (file == null) return;
-    final fileName = path.basename(file!.path);
-    final destination = 'files/$fileName';
-    FirebaseApi.uploadFile(destination, file!);
-
-    task = FirebaseApi.uploadFile(destination, file!);
-    setState(() {});
-    if (task == null) return;
-    final snapshot = await task!.whenComplete(() {});
-    final urlDownload = await snapshot.ref.getDownloadURL();
-    print('Download-Link:$urlDownload');
+  void getFromGallery() async {
+    XFile? pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    cropImage(pickedFile!.path);
+    // ignore: use_build_context_synchronously
+    Navigator.pop(context);
   }
 
-  Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
-      stream: task.snapshotEvents,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final snap = snapshot.data!;
-          final progress = snap.bytesTransferred / snap.totalBytes;
-          final percentage = (progress * 100).toString();
-          return Text(
-            'Image Upload: $percentage% DONE',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          );
-        } else {
-          return Container();
-        }
+  void cropImage(filePath) async {
+    CroppedFile? croppedImage = await ImageCropper()
+        .cropImage(sourcePath: filePath, maxHeight: 1080, maxWidth: 1080);
+    if (croppedImage != null) {
+      setState(() {
+        imageFile = File(croppedImage.path);
       });
-  Future signUp() async {
-    final isValid = formKey.currentState!.validate();
-    if (!isValid) return;
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => const Center(
-              child: CircularProgressIndicator(
-                color: kAccent,
-              ),
-            ));
-    try {
-      authMethod.signUpwithEmailAndPassword(
-          emailController.text.trim(), passwordController.text.trim());
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
-      addUserDetails(
-        usernameController.text.trim(),
-        fullNameController.text.trim(),
-        phoneController.text.trim(),
-        emailController.text.trim(),
-        passwordController.text.trim(),
-      );
-    } on FirebaseAuthException catch (e) {
-      //print(e);
-      Utils.showSnackBar(e.message);
     }
-    navigatorKey.currentState!.popUntil((route) => route.isFirst);
-  }
-  // Future signUp() async {
-  //   final isValid = formKey.currentState!.validate();
-  //   if (formKey.currentState!.validate()) {
-  //     if (!isValid) return;
-  //     showDialog(
-  //         context: context,
-  //         barrierDismissible: false,
-  //         builder: (context) => const Center(
-  //               child: CircularProgressIndicator(
-  //                 color: kAccent,
-  //               ),
-  //             ));
-  //   }
-  //   try {
-  //     authMethod
-  //         .signUpwithEmailAndPassword(
-  //             emailController.text.trim(), passwordController.text.trim())
-  //         .then((value) {
-  //       Map<String, String> userInfoMap = {
-  //         'email': emailController.text.trim(),
-  //         'full name': fullNameController.text.trim(),
-  //         'password': passwordController.text.trim(),
-  //         'phone': phoneController.text.trim(),
-  //         'username': usernameController.text.trim()
-  //       };
-  //       databaseMethods.uploadUserInfo(userInfoMap);
-  //       Navigator.pushReplacement(
-  //           context, MaterialPageRoute(builder: (context) => MyHomePage()));
-  //     });
-  //   } catch (e) {
-  //     print(e.toString());
-  //   }
-  // }
-
-  Future addUserDetails(String username, String fullname, String phone,
-      String email, String password) async {
-    await FirebaseFirestore.instance.collection('users').add({
-      'username': username,
-      'full name': fullname,
-      'phone': phone,
-      'email': email,
-      'password': password,
-    });
-  }
-
-  Future retrieve(String username, String fullname, String phone, String email,
-      String password) async {
-    await FirebaseFirestore.instance.collection('users').get();
   }
 }

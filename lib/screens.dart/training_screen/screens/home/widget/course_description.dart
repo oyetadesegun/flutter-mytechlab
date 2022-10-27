@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:mytechlab/components/constants/colors.dart';
 
@@ -6,13 +5,11 @@ import '../../../models/course.dart';
 
 class CourseDescription extends StatelessWidget {
   final Course course;
-  CourseDescription(
-    this.course,
-  );
+  const CourseDescription(this.course, {super.key});
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -25,35 +22,35 @@ class CourseDescription extends StatelessWidget {
                   width: 20,
                 ),
               ),
-              SizedBox(width: 5),
+              const SizedBox(width: 5),
               Text(
                 course.author,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 5),
+                margin: const EdgeInsets.symmetric(horizontal: 5),
                 height: 5,
                 width: 5,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: kFontLight,
                   shape: BoxShape.circle,
                 ),
               ),
               Icon(Icons.access_time_filled, size: 20, color: kAccent),
-              SizedBox(width: 5),
-              Text('1h 35 min',
+              const SizedBox(width: 5),
+              const Text('1h 35 min',
                   style: TextStyle(
                       color: kFont, fontSize: 16, fontWeight: FontWeight.bold))
             ],
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           Text(
             course.title,
-            style: TextStyle(
+            style: const TextStyle(
                 fontWeight: FontWeight.bold, fontSize: 22, color: kFont),
           ),
-          SizedBox(height: 15),
-          Text(
+          const SizedBox(height: 15),
+          const Text(
             'How we developed speech and it became such a powerful book became such a powerful book',
             style: TextStyle(wordSpacing: 2, fontSize: 16, color: kFontLight),
           )

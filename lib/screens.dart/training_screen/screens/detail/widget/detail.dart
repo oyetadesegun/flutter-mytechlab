@@ -8,7 +8,7 @@ import '../../home/widget/course_progress.dart';
 class DetailPage extends StatelessWidget {
   final Course course;
 
-  DetailPage(this.course);
+  const DetailPage(this.course, {super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

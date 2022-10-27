@@ -6,6 +6,8 @@ import 'category_title.dart';
 
 class FeatureCourse extends StatelessWidget {
   final coursesList = Course.generateCourse();
+
+  FeatureCourse({super.key});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,9 +20,9 @@ class FeatureCourse extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: coursesList.length,
               shrinkWrap: true,
-              itemBuilder: ((context, index) => CourseItem(coursesList[index])),
+              itemBuilder: (context, index) => CourseItem(coursesList[index]),
               separatorBuilder: (BuildContext context, int index) =>
-                  SizedBox(width: 15),
+                  const SizedBox(width: 15),
             ),
           )
         ],

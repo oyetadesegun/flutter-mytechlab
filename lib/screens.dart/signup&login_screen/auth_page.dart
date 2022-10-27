@@ -15,6 +15,6 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) => isLogin
       ? LoginScreen(onClickedSignUp: toggle)
-      : SignUpScreen(onClickedSignIn: toggle); //onClickedSignIn: toggle);
+      : SignUpScreen(onClickedSignIn: toggle);
   void toggle() => setState(() => isLogin = !isLogin);
 }

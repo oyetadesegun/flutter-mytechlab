@@ -8,6 +8,8 @@ import 'package:mytechlab/components/constants/colors.dart';
 import 'utils.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({super.key});
+
   @override
   State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
@@ -24,11 +26,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           backgroundColor: kAccent,
-          title: Text('Reset Password'),
+          title: const Text('Reset Password'),
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Form(
                 key: formKey,
                 child: Column(
@@ -40,27 +42,28 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         height: 130,
                       ),
                     ),
-                    Text(
+                    const Text(
                         'Enter Your Email and we will send you a\npassword reset link. Make sure you check your spam',
                         textAlign: TextAlign.center,
                         style: TextStyle(fontSize: 24)),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     TextFormField(
                         controller: emailController,
                         cursorColor: kAccent,
                         textInputAction: TextInputAction.done,
-                        decoration: InputDecoration(labelText: 'Email'),
+                        decoration: const InputDecoration(labelText: 'Email'),
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (email) =>
                             email != null && !EmailValidator.validate(email)
                                 ? 'Enter a valid email'
                                 : null),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                          primary: kAccent, minimumSize: Size.fromHeight(50)),
-                      icon: Icon(Icons.email_outlined),
-                      label: Text(
+                          primary: kAccent,
+                          minimumSize: const Size.fromHeight(50)),
+                      icon: const Icon(Icons.email_outlined),
+                      label: const Text(
                         'Reset Password',
                         style: TextStyle(fontSize: 24),
                       ),

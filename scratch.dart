@@ -1,92 +1,167 @@
+// // ignore_for_file: public_member_api_docs, sort_constructors_first
 
-  //get docIDs   sha1:  ab8fca6472d9ae5467dac8fc8477917115d336d4
-  //      SHA-256: e14ed8ff5898e25e6a632ebe723bdc1acc4083215772c05c553066b6d0b8d236
-  // KEY-SHAAs    2jmj7l5rSw0yVb/vlWAYkK/YBwk=
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+// import 'package:mytechlab/screens.dart/course/course_model/course_widget.dart';
+// import 'package:mytechlab/screens.dart/course/details_screen.dart';
+// import '../../components/constants/colors.dart';
+// import '../../data/user_data.dart';
+// import '../../main.dart';
+// import '../drawer/drawer_menu_widget.dart';
 
-//   {
-//     final Size size = MediaQuery.of(context).size;
-//     return Scaffold(
-//       backgroundColor: Colors.white10,
-//       body: Stack(children: [
-//         Positioned(
-//           bottom: 0,
-//           left: 0,
-//           child: Container(
-//             width: size.width,
-//             height: 80,
-//             // color: Colors.white,
-//             child: Stack(children: [
-//               CustomPaint(
-//                 size: Size(size.width, 80),
-//                 painter: BNBCustomPainter(),
-//               ),
-//               Center(
-//                   heightFactor: 0.6,
-//                   child: GestureDetector(
-//                     onTap: () => Navigator.pushNamed(context, WalletScreen.id),
-//                     child: FloatingActionButton(
-//                       onPressed: () =>
-//                           Navigator.pushNamed(context, WalletScreen.id),
-//                       backgroundColor: kAccent,
-//                       child: Icon(Icons.wallet, size: 40),
-//                       elevation: 0.1,
-//                     ),
-//                   )),
-//               Container(
-//                 width: size.width,
-//                 height: 80,
-//                 child: Row(
-//                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                     children: [
-//                       IconButton(
-//                           onPressed: () =>
-//                               Navigator.pushNamed(context, TrainingScreen.id),
-//                           icon: Icon(Icons.home)),
-//                       IconButton(
-//                           onPressed: () =>
-//                               Navigator.pushNamed(context, ExploreScreen.id),
-//                           icon: Icon(Icons.calendar_month_rounded)),
-//                           Container(width: size.width*0.2),
-//                       IconButton(
-//                           onPressed: () =>
-//                               Navigator.pushNamed(context, ChatScreen.id),
-//                           icon: Icon(Icons.chat)),
-//                       IconButton(
-//                           onPressed: () =>
-//                               Navigator.pushNamed(context, ProfileScreen.id),
-//                           icon: Icon(Icons.supervisor_account)),
-//                     ]),
-//               ),
-//             ]),
-//           ),
-//         ),
-//       ]),
-//     );
-//   }
+// class MainCourse extends StatefulWidget {
+//   final VoidCallback openDrawer;
+
+//   const MainCourse({
+//     Key? key,
+//     required this.openDrawer,
+//   }) : super(key: key);
+
+//   @override
+//   State<MainCourse> createState() => _MainCourseState();
 // }
 
-// class BNBCustomPainter extends CustomPainter {
-//   @override
-//   void paint(Canvas canvas, Size size) {
-//     Paint paint = Paint()
-//       ..color = Colors.white
-//       ..style = PaintingStyle.fill;
-//     Path path = Path()..moveTo(0, 20);
-//     path.quadraticBezierTo(size.width * 0.20, 0, size.width * 0.35, 0);
-//     path.quadraticBezierTo(size.width * 0.40, 0, size.width * 0.40, 20);
-//     path.arcToPoint(Offset(size.width * 0.60, 20),
-//         radius: Radius.circular(10), clockwise: false);
-//     path.quadraticBezierTo(size.width * 0.60, 0, size.width * 0.65, 0);
-//     path.quadraticBezierTo(size.width * 0.80, 0, size.width, 20);
-//     path.lineTo(size.width, size.height);
-//     path.lineTo(0, size.height);
-//     path.close();
-//     canvas.drawShadow(path, Colors.black, 5, true);
-//     canvas.drawPath(path, paint);
+// class _MainCourseState extends State<MainCourse> {
+//   //final List<String> courseIDs = [];
+//   String? courseImage;
+//   Object? courseId;
+//   QuerySnapshot? courses;
+//   Future getCourses() async {
+//     courses = await FirebaseFirestore.instance.collection('courses').get();
+//     courseId = courses!.docs;
 //   }
 
 //   @override
-//   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-//     return false;
+//   void initState() {
+//     getCourses();
+//     super.initState();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     TextEditingController searchCourseController = TextEditingController();
+//     return Scaffold(
+//         appBar: AppBar(
+//           backgroundColor: isWhite ? kBackground : Colors.black,
+//           leading: DrawerMenuWidget(onClicked: widget.openDrawer),
+//           elevation: 0,
+//           centerTitle: false,
+//           actions: [
+//             Container(
+//               height: 40,
+//               width: 40,
+//               margin: const EdgeInsets.only(top: 15, right: 20),
+//               decoration: BoxDecoration(
+//                   shape: BoxShape.circle,
+//                   image: DecorationImage(
+//                       image: NetworkImage(Constants.myProfilePic))),
+//             ),
+//           ],
+//         ),
+//         body: Padding(
+//             padding: const EdgeInsets.symmetric(horizontal: 20),
+//             child: Column(
+//                 mainAxisSize: MainAxisSize.max,
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                   Text(
+//                     'Hey ${Constants.myName},',
+//                     style: const TextStyle(
+//                         color: Colors.black,
+//                         fontSize: 20,
+//                         fontWeight: FontWeight.bold),
+//                   ),
+//                   const SizedBox(
+//                     height: 10,
+//                   ),
+//                   Text(
+//                     'What would you like to learn today',
+//                     style: TextStyle(
+//                       color: Colors.grey.shade600,
+//                       fontSize: 16,
+//                     ),
+//                   ),
+//                   Container(
+//                     padding: const EdgeInsets.symmetric(
+//                         horizontal: 20, vertical: 10),
+//                     margin: const EdgeInsets.symmetric(vertical: 30),
+//                     height: 60,
+//                     width: double.infinity,
+//                     decoration: BoxDecoration(
+//                         color: Colors.grey.shade300,
+//                         borderRadius: BorderRadius.circular(40)),
+//                     child: TextField(
+//                       controller: searchCourseController,
+//                       autocorrect: true,
+//                       decoration: const InputDecoration(
+//                           icon: Icon(Icons.search),
+//                           hintText: 'Search what would like to learn...',
+//                           border: InputBorder.none,
+//                           hintStyle: TextStyle(
+//                             color: Colors.grey,
+//                           )),
+//                       style: const TextStyle(color: Colors.black, fontSize: 16),
+//                     ),
+//                   ),
+//                   Row(
+//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                     children: const [
+//                       Text('Category',
+//                           style: TextStyle(
+//                               fontWeight: FontWeight.bold, fontSize: 20)),
+//                       Spacer(),
+//                       Text('See All',
+//                           style: TextStyle(color: Colors.grey, fontSize: 18)),
+//                       SizedBox(height: 30),
+//                     ],
+//                   ),
+//                   const SizedBox(
+//                     height: 10,
+//                   ),
+//                   Expanded(
+//                     child: FutureBuilder(
+//                         future: getCourses(),
+//                         builder: (context, AsyncSnapshot snapshot) {
+//                           if (snapshot.connectionState ==
+//                               ConnectionState.waiting) {
+//                             return Center(
+//                               child: CircularProgressIndicator(color: kAccent),
+//                             );
+//                           } else if (snapshot.connectionState ==
+//                               ConnectionState.active) {
+//                             if (snapshot.data?.docs.isNotEmpty == true) {
+//                               return MasonryGridView.count(
+//                                 shrinkWrap: true,
+//                                 itemCount: courses!.docs.length,
+//                                 crossAxisCount: 2,
+//                                 mainAxisSpacing: 20,
+//                                 crossAxisSpacing: 20,
+//                                 itemBuilder: (context, index) {
+//                                   return CourseWidget(
+//                                     courseId: courses!.docs[index]['courseId'],
+//                                     courseImage: courses!.docs[index]
+//                                         ['courseImage'],
+//                                     courseTitle: courses!.docs[index]
+//                                         ['courseTitle'],
+//                                     videos: courses!.docs[index]['videos'],
+//                                     height: index.isEven ? 200 : 240,
+//                                   );
+//                                 },
+//                               );
+//                             }
+//                           } else {
+//                             return const Text(
+//                               'There is no Course yet',
+//                               style: TextStyle(fontSize: 20),
+//                             );
+//                           }
+//                           return const Text(
+//                             'There is error',
+//                             style: TextStyle(fontSize: 20),
+//                           );
+//                         }),
+//                   ),
+//                 ])));
 //   }
 // }

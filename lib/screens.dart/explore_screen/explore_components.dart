@@ -1,18 +1,20 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:mytechlab/screens.dart/profile_screen/profile_screen.dart';
+
+import 'package:mytechlab/components/constants/constant.dart';
+import 'package:mytechlab/screens.dart/settings_screen/settings_screen.dart';
+
 import '../../components/constants/colors.dart';
 import '../../data/user_data.dart';
-import 'package:mytechlab/components/constants/constant.dart';
+import '../drawer/drawer_menu_widget.dart';
 
 class FlexibleSection extends StatelessWidget {
-  const FlexibleSection({
+  FlexibleSection({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    //  final user = FirebaseAuth.instance.currentUser!;
     return Hero(
       tag: 'topbar',
       child: Container(
@@ -28,19 +30,18 @@ class FlexibleSection extends StatelessWidget {
                     radius: 53,
                     child: CircleAvatar(
                         radius: 50,
-                        backgroundImage: NetworkImage(kProfilePicture)),
+                        backgroundImage: NetworkImage(Constants.myProfilePic)),
                   ),
                   SizedBox(height: 8),
                   Text(
-                    '',
-                    //user.email!,
+                    Constants.myName,
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 25,
                         fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    kMember,
+                    Constants.myUserName,
                     style: TextStyle(
                       color: Color.fromRGBO(255, 255, 255, 1),
                       fontSize: 20,
@@ -55,21 +56,17 @@ class FlexibleSection extends StatelessWidget {
 }
 
 class TitleSection extends StatelessWidget {
-  const TitleSection({
-    Key? key,
-  }) : super(key: key);
+  final VoidCallback openDrawer;
+  TitleSection({
+    required this.openDrawer,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // GestureDetector(
-        //   onTap: () {
-        //    Navigator.pushNamed(context, HomeScreen.id);
-        //   },
-        //   child: Icon(Icons.arrow_back, color: Colors.white, size: 30),
-        // ),
+        DrawerMenuWidget(onClicked: openDrawer),
         Center(
           child: Text(
             'Job Explore Page',
@@ -81,7 +78,11 @@ class TitleSection extends StatelessWidget {
         ),
         GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, ProfileScreen.id);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          SettingsScreen(openDrawer: openDrawer)));
             },
             child: Icon(Icons.perm_identity, color: Colors.white, size: 30)),
       ],
@@ -100,7 +101,7 @@ class Heading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 30),
+      padding: EdgeInsets.only(top: 30),
       child: Center(
         child: Text(title,
             style: TextStyle(
@@ -115,7 +116,7 @@ class RowBottomJobApply extends StatelessWidget {
   final String text;
   final String value;
 
-  const RowBottomJobApply(this.icon, this.text, this.value);
+  RowBottomJobApply(this.icon, this.text, this.value, {super.key});
 
   @override
   Widget build(BuildContext context) {

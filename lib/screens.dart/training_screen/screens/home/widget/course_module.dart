@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:mytechlab/components/constants/colors.dart';
 
@@ -6,21 +5,21 @@ import '../../../models/module.dart';
 
 class CourseModule extends StatelessWidget {
   final Module module;
-  const CourseModule(this.module);
+  const CourseModule(this.module, {super.key});
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 180,
       child: Row(
         children: [
           Flexible(
               flex: 1,
               child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
+                margin: const EdgeInsets.symmetric(vertical: 10),
                 child: Column(
                   children: [
                     Container(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
                           border:
                               Border.all(color: module.iconBorder, width: 2),
@@ -46,8 +45,8 @@ class CourseModule extends StatelessWidget {
           Flexible(
             flex: 5,
             child: Container(
-              margin: EdgeInsets.all(10),
-              padding: EdgeInsets.all(20),
+              margin: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                   color: module.moduleBg,
                   border: Border.all(color: module.moduleBorder, width: 2),
@@ -60,23 +59,23 @@ class CourseModule extends StatelessWidget {
                     children: [
                       Text(
                         module.title,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, color: kFontLight),
                       ),
-                      Icon(Icons.more_horiz, color: kFontLight)
+                      const Icon(Icons.more_horiz, color: kFontLight)
                     ],
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Text(module.desc,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                           color: kFont.withOpacity(0.7))),
-                  SizedBox(height: 13),
+                  const SizedBox(height: 13),
                   Row(
                     children: [
                       _buildButton(Icons.access_time_filled, module.time),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       _buildButton(Icons.bookmarks, module.lesson)
                     ],
                   )
@@ -91,7 +90,7 @@ class CourseModule extends StatelessWidget {
 
   Container _buildButton(IconData icon, String text) {
     return Container(
-        padding: EdgeInsets.all(5),
+        padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
             color: module.buttonColor, borderRadius: BorderRadius.circular(20)),
         child: Row(
@@ -101,7 +100,7 @@ class CourseModule extends StatelessWidget {
               size: 20,
               color: module.buttonColor,
             ),
-            SizedBox(width: 5),
+            const SizedBox(width: 5),
             Text(
               text,
               style: TextStyle(

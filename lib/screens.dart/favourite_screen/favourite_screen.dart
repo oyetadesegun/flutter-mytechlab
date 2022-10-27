@@ -3,6 +3,8 @@ import 'package:mytechlab/screens.dart/explore_screen/explore_screen.dart';
 
 class FavouriteScreen extends StatefulWidget {
   static const String id = 'FavouriteScreen';
+
+  const FavouriteScreen({super.key});
   @override
   _FavouriteScreenState createState() => _FavouriteScreenState();
 }
@@ -16,12 +18,12 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       child: Container(
         child: Scaffold(
             appBar: AppBar(
-              leading: Icon(Icons.notes),
+              leading: const Icon(Icons.notes),
               backgroundColor: Colors.green,
               centerTitle: true,
-              title: Text('My Job Screen'),
+              title: const Text('My Job Screen'),
             ),
-            body: page == true ? NoJobYet() : Container()),
+            body: page == true ? const NoJobYet() : Container()),
       ),
     );
   }
@@ -36,7 +38,7 @@ class NoJobYet extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(children: [
       Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Center(
             child: Column(
           children: [
@@ -44,12 +46,12 @@ class NoJobYet extends StatelessWidget {
               'images/empty-1.png',
               height: 350,
             ),
-            Text(
+            const Text(
               'No jobs yet...',
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
-            Center(
+            const SizedBox(height: 10),
+            const Center(
               child: Text(
                 'When you Apply for a Job,',
                 style: TextStyle(
@@ -58,7 +60,7 @@ class NoJobYet extends StatelessWidget {
                 ),
               ),
             ),
-            Center(
+            const Center(
               child: Text(
                 'it will appear here in form a list',
                 style: TextStyle(
@@ -67,7 +69,7 @@ class NoJobYet extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             GestureDetector(
               onTap: () {
                 Navigator.pushNamed(context, ExploreScreen.id);
@@ -76,8 +78,9 @@ class NoJobYet extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: Colors.green,
                     borderRadius: BorderRadius.circular(10)),
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Text(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: const Text(
                   'START SEARCHING',
                   style: TextStyle(color: Colors.white),
                 ),
@@ -89,4 +92,3 @@ class NoJobYet extends StatelessWidget {
     ]);
   }
 }
-//

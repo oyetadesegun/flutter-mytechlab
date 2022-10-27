@@ -4,13 +4,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mytechlab/screens.dart/signup&login_screen/signup_screen.dart';
 import 'package:mytechlab/screens.dart/signup&login_screen/utils.dart';
 import 'package:mytechlab/screens.dart/splash_screen/intro_slider_screen.dart';
 import 'package:mytechlab/screens.dart/splash_screen/splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 bool isWhite = true;
+late bool isDrawerOpen;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -40,12 +40,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          dividerColor: Colors.black,
           visualDensity: VisualDensity.adaptivePlatformDensity,
-          primaryColor: Colors.black,
+          primaryColor: Colors.blue.shade300,
         ),
         scaffoldMessengerKey: Utils.messengerKey,
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
-        home: showHome ? SplashScreen() : IntroSliderScreen());
+        home: showHome ? const SplashScreen() : const IntroSliderScreen());
   }
 }

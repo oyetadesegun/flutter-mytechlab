@@ -6,7 +6,7 @@ import '../../../models/course.dart';
 
 class CourseItem extends StatelessWidget {
   final Course course;
-  CourseItem(this.course);
+  const CourseItem(this.course, {super.key});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,7 +22,7 @@ class CourseItem extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20),
                     ),
@@ -51,32 +51,30 @@ class CourseItem extends StatelessWidget {
                         Row(
                           children: [
                             Image.asset(course.authorImg, width: 20),
-                            SizedBox(width: 5),
+                            const SizedBox(width: 5),
                             Text(course.author,
-                                style: TextStyle(fontWeight: FontWeight.bold))
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold))
                           ],
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Row(
                           children: [
                             Text(
                               course.title,
-                              // maxLines: 1,
-                              // overflow: TextOverflow.ellipsis,
-                              //  softWrap: false,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
                                   color: kFont),
                             ),
                             Container(
-                              margin: EdgeInsets.symmetric(horizontal: 5),
+                              margin: const EdgeInsets.symmetric(horizontal: 5),
                               width: 5,
                               height: 5,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                   color: kFontLight, shape: BoxShape.circle),
                             ),
-                            Text(
+                            const Text(
                               '2h 22min',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -97,7 +95,7 @@ class CourseItem extends StatelessWidget {
             right: 20,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  primary: kAccent,
+                  backgroundColor: kAccent,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10))),
@@ -105,7 +103,7 @@ class CourseItem extends StatelessWidget {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => DetailPage(course)));
               },
-              child: Text('Start'),
+              child: const Text('Start'),
             ),
           )
         ],

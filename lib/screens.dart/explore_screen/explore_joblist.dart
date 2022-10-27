@@ -6,7 +6,9 @@ import 'explore_components.dart';
 
 class ExploreJobList extends StatelessWidget {
   static const String id = 'ExploreJobList';
-  final JobList = Jobs.generateJobs();
+  final jobList = Jobs.generateJobs();
+
+  ExploreJobList({super.key});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -15,14 +17,13 @@ class ExploreJobList extends StatelessWidget {
           Heading(
             title: 'Recent Posted Jobs',
           ),
-          // SizedBox(height: 30),
           Container(
             child: ListView.separated(
               scrollDirection: Axis.vertical,
-              itemCount: JobList.length,
-              itemBuilder: ((context, index) => JobTile(JobList[index])),
+              itemCount: jobList.length,
+              itemBuilder: (context, index) => JobTile(jobList[index]),
               separatorBuilder: (BuildContext context, int index) =>
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
             ),
           )
         ],
